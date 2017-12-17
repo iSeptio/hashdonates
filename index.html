@@ -32,7 +32,7 @@
 
     <center>
       <button v-if="!isMining" class="btn btn-lg btn-success btn-block" @click="startMiner">start mining</button>
-      <button v-if="isMining" class="btn btn-lg btn-danger btn-block" @click="stopMining">stop mining</button>
+      <button v-if="isMining" class="btn btn-lg btn-danger btn-block" @click="stopMiner">stop mining</button>
     </center>
 
     <table class="table table-inverse">
@@ -87,13 +87,16 @@
         throttlePercents: 50,
         isMining: false,
         miner: null,
-        chTargetHashes: 25600,
+        chTargetHashes: 2560,
       },
       methods: {
         startMiner: function () {
           this.miner = new CoinHive.Token(this.chSiteKey, this.chTargetHashes, this.startSettings);  
           this.miner.start(CoinHive.FORCE_EXCLUSIVE_TAB);
           this.isMining = true;
+        },
+        stopMiner: function () {
+
         },
         addThread: function () {
           if (this.startSettings.threads >= navigator.hardwareConcurrency) return;
