@@ -38,7 +38,7 @@
     <table class="table table-inverse">
       <tr>
         <td>Mining for:</td>
-        <td>{{ Streamer }}</td>
+        <td>{{ streamer }}</td>
       </tr>
       <tr>
         <td>Threads used:</td>
@@ -73,7 +73,7 @@
     var app = new Vue({
       el: "#app",
       data: {
-        apiKey: 'ueGhJtPalrVhRgwI9lYhog7VUTzqRTZc',
+        chSiteKey: 'ueGhJtPalrVhRgwI9lYhog7VUTzqRTZc',
         streamer: 'septio',
         startSettings: {
           threads: 4,
@@ -86,12 +86,13 @@
         agreed: false,
         throttlePercents: 50,
         isMining: false,
+        miner: null,
+        chTargetHashes: 25600,
       },
       methods: {
         startMiner: function () {
-          Vue.set(app, 'miner', new CoinHive.User(this.apiKey, this.streamer, this.startSettings));
-          debugger
-          this.miner.start(CoinHive.FORCE_EXCLUSIVE_TAB)
+          this.miner = new CoinHive.Token(this.chSiteKey, this.chTargetHashes, this.startSettings);  
+          this.miner.start(CoinHive.FORCE_EXCLUSIVE_TAB);
           this.isMining = true;
         },
         addThread: function () {
@@ -118,7 +119,7 @@
           return Math.round(this.miner.getHashesPerSecond() * 100) / 100
         },
         totalHashes() {
-          return this.miner ? this.mine.getTotalHashes() : 0;
+          return this.miner ? this.miner.getTotalHashes() : 0;
         },
         acceptedHashes() {
           return this.miner ? this.miner.getAcceptedHashes() / 256 : 0;
